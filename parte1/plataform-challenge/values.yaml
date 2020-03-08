@@ -1,0 +1,14 @@
+replicaCount: 1
+
+image:
+  repository: registry-1.docker.io/victoramsantos/plataform-challenge
+  tag: prd
+  pullPolicy: Always
+
+serviceAccount:
+  create: true
+  name:
+
+service:
+  type: LoadBalancer
+  port: 8080
