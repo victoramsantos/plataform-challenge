@@ -12,3 +12,6 @@ serviceAccount:
 service:
   type: LoadBalancer
   port: 8080
+
+application:
+  healthPath: /
