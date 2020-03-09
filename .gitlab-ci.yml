@@ -21,14 +21,8 @@ gradle_test:
   script:
     - echo "gradle test"
 
-docker_build:
+docker_build_push:
   stage: packing
   script:
     - echo "docker build . -f ${DOCKERFILE_PATH}/Dockerfile -t ${IMAGE_NAME}:${IMAGE_VERSION}"
-
-docker_push:
-  stage: packing
-  script:
     - echo "docker push ${DOCKER_REPOSITORY}/${IMAGE_NAME}:${IMAGE_VERSION}"
-
-
