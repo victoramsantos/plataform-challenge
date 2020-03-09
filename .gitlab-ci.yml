@@ -18,7 +18,6 @@ gradle_build:
 
 gradle_test:
   stage: test
-  needs: gradle_build
   script:
     - echo "gradle test"
 
@@ -29,7 +28,6 @@ docker_build:
 
 docker_push:
   stage: packing
-  needs: docker_build
   script:
     - echo "docker push ${DOCKER_REPOSITORY}/${IMAGE_NAME}:${IMAGE_VERSION}"
 
