@@ -1,7 +1,7 @@
 image: gradle:6.2-jdk8
 
 variables:
-  DOCKERFILE_PATH: "./parte1/"
+  DOCKERFILE_PATH: "./parte1"
   DOCKER_REPOSITORY: "victoramsantos"
   IMAGE_NAME: "plataform-challenge"
   IMAGE_VERSION: "prd"
