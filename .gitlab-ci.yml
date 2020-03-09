@@ -1,10 +1,11 @@
-image: gradle:6.2-jdk8
+image: gradle:5.2-jdk8
 
 variables:
   DOCKERFILE_PATH: "./parte1"
   DOCKER_REPOSITORY: "victoramsantos"
   IMAGE_NAME: "plataform-challenge"
   IMAGE_VERSION: "prd"
+  APPLICATION_PATH: "./app"
 
 stages:
   - build
@@ -14,7 +15,8 @@ stages:
 gradle_build:
   stage: build
   script:
-    - echo "gradle clean build"
+    - cd $APPLICATION_PATH
+    - ./gradlew clean build
 
 gradle_test:
   stage: test
