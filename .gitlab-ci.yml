@@ -26,3 +26,5 @@ docker_build_push:
   script:
     - echo "docker build . -f ${DOCKERFILE_PATH}/Dockerfile -t ${IMAGE_NAME}:${IMAGE_VERSION}"
     - echo "docker push ${DOCKER_REPOSITORY}/${IMAGE_NAME}:${IMAGE_VERSION}"
+  only:
+    - master
