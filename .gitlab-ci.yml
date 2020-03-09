@@ -13,9 +13,12 @@ gradle_build:
   image: java:8-jdk
   stage: build
   script:
-    - echo $teste
-    - cd $APPLICATION_PATH
-    - ./gradlew clean build
+    - echo $TESTE
+    - echo $TESTE_PROTECTED
+    - echo $TESTE_MASKED
+    - echo $TESTE_PROTECTED_MASK
+#    - cd $APPLICATION_PATH
+#    - ./gradlew clean build
 
 docker_build_push:
   stage: packing
