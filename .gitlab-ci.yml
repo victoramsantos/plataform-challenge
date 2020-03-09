@@ -1,0 +1,36 @@
+image: gradle:6.2-jdk8
+
+variables:
+  DOCKERFILE_PATH: "./parte1/"
+  DOCKER_REPOSITORY: "victoramsantos"
+  IMAGE_NAME: "plataform-challenge"
+  IMAGE_VERSION: "prd"
+
+stages:
+  - build
+  - test
+  - packing
+
+gradle_build:
+  stage: build
+  script:
+    - echo "gradle clean build"
+
+gradle_test:
+  stage: test
+  needs: gradle_build
+  script:
+    - echo "gradle test"
+
+docker_build:
+  stage: packing
+  script:
+    - echo "docker build . -f ${DOCKERFILE_PATH}/Dockerfile -t ${IMAGE_NAME}:${IMAGE_VERSION}"
+
+docker_push:
+  stage: packing
+  needs: docker_build
+  script:
+    - echo "docker push ${DOCKER_REPOSITORY}/${IMAGE_NAME}:${IMAGE_VERSION}"
+
+
