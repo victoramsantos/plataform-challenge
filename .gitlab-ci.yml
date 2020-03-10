@@ -33,6 +33,9 @@ docker_build_push:
   script:
     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - docker build . -f $DOCKERFILE_PATH/Dockerfile -t $IMAGE_NAME:$IMAGE_VERSION
+    - docker run -d -p8080:8080 plataform-challenge:test
+    - curl localhost:8080
+    - docker kill $(docker ps -q)
     - docker run -d -p8080:8080 plataform-challenge:prd
     - curl localhost:8080
 #    - echo "docker push ${DOCKER_REPOSITORY}/${IMAGE_NAME}:${IMAGE_VERSION}"
