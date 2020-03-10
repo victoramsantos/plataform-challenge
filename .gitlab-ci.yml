@@ -7,28 +7,43 @@ variables:
   DOCKER_HOST: tcp://docker:2375
 
 stages:
-  - build
-  - packing
+  - deploy
+#  - build
+#  - packing
+#
+#gradle_build:
+#  image: java:8-jdk
+#  stage: build
+#  script:
+#    - cd $APPLICATION_PATH
+#    - ./gradlew clean build
+#  artifacts:
+#    paths:
+#      - $APPLICATION_ARTIFACT
+#
+#docker_build_push:
+#  image: docker:18.09.7
+#  services:
+#    - docker:18.09.7-dind
+#  stage: packing
+#  script:
+#    - docker build . -f $DOCKERFILE_PATH/Dockerfile -t $DOCKER_REPOSITORY/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
+#    - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+#    - docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
+#    - echo "APPLICATION_IMAGE -> $DOCKER_REPOSITORY/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA"
+##  only:
+##    - master
 
-gradle_build:
-  image: java:8-jdk
-  stage: build
+deploy_minikube_ec2:
+  stage: deploy
+  tags:
+    - ec2-runner
+  before_script:
+    - mkdir -p ~/.ssh
+    - echo -e “$SSH_PRIVATE_KEY” > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ‘[[ -f /.dockerenv ]] && echo -e “Host *\n\tStrictHostKeyChecking no\n\n” > ~/.ssh/config’
   script:
-    - cd $APPLICATION_PATH
-    - ./gradlew clean build
-  artifacts:
-    paths:
-      - $APPLICATION_ARTIFACT
-
-docker_build_push:
-  image: docker:18.09.7
-  services:
-    - docker:18.09.7-dind
-  stage: packing
-  script:
-    - docker build . -f $DOCKERFILE_PATH/Dockerfile -t $DOCKER_REPOSITORY/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
-    - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-    - docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
-    - echo "APPLICATION_IMAGE -> $DOCKER_REPOSITORY/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA"
-  only:
-    - master
+    - echo "testeing-connection" > ~/test.txt
+#  only:
+#    - master
