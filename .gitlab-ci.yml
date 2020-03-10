@@ -28,6 +28,7 @@ docker_build_push:
     - docker:18.09.7-dind
   stage: packing
   script:
+    - echo $TEST
     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - docker build . -f $DOCKERFILE_PATH/Dockerfile -t $IMAGE_NAME:$IMAGE_VERSION
 #    - echo "docker build . -f $DOCKERFILE_PATH/Dockerfile -t $IMAGE_NAME:$IMAGE_VERSION"
