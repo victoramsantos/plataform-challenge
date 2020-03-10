@@ -2,7 +2,6 @@ variables:
   DOCKERFILE_PATH: "./parte1"
   DOCKER_REPOSITORY: "victoramsantos"
   IMAGE_NAME: "plataform-challenge"
-  IMAGE_VERSION: "test"
   APPLICATION_PATH: "./app"
   APPLICATION_ARTIFACT: "./app/build/libs/app.jar"
   DOCKER_HOST: tcp://docker:2375
@@ -27,8 +26,9 @@ docker_build_push:
     - docker:18.09.7-dind
   stage: packing
   script:
-    - docker build . -f $DOCKERFILE_PATH/Dockerfile -t $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_VERSION
+    - docker build . -f $DOCKERFILE_PATH/Dockerfile -t $DOCKER_REPOSITORY/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-    - docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_VERSION
+    - docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
+    - echo "APPLICATION_IMAGE -> $DOCKER_REPOSITORY/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA"
 #  only:
 #    - master
