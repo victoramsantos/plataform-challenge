@@ -4,6 +4,12 @@ variables:
   IMAGE_NAME: "plataform-challenge"
   IMAGE_VERSION: "test"
   APPLICATION_PATH: "./app"
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+
+#cache:
+#  paths:
+#    - $APPLICATION_PATH/.gradle
 
 stages:
   - build
@@ -13,17 +19,18 @@ gradle_build:
   image: java:8-jdk
   stage: build
   script:
-    - echo $TESTE
-    - echo $TESTE_PROTECTED
-    - echo $TESTE_MASKED
-    - echo $TESTE_PROTECTED_MASK
-#    - cd $APPLICATION_PATH
+    - cd $APPLICATION_PATH
 #    - ./gradlew clean build
 
 docker_build_push:
+  image: docker:18.09.7
+  services:
+    - docker:18.09.7-dind
   stage: packing
   script:
-    - echo "docker build . -f $DOCKERFILE_PATH/Dockerfile -t $IMAGE_NAME:$IMAGE_VERSION"
+    - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - docker build . -f $DOCKERFILE_PATH/Dockerfile -t $IMAGE_NAME:$IMAGE_VERSION
+#    - echo "docker build . -f $DOCKERFILE_PATH/Dockerfile -t $IMAGE_NAME:$IMAGE_VERSION"
     - echo "docker push ${DOCKER_REPOSITORY}/${IMAGE_NAME}:${IMAGE_VERSION}"
   only:
     - master
