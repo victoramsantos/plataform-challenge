@@ -7,10 +7,6 @@ variables:
   APPLICATION_ARTIFACT: "./app/build/libs/app.jar"
   DOCKER_HOST: tcp://docker:2375
 
-cache:
-  paths:
-    - $APPLICATION_PATH/.gradle
-
 stages:
   - build
   - packing
