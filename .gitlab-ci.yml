@@ -12,8 +12,7 @@ variables:
 #    - $APPLICATION_PATH/.gradle
 
 stages:
-  - build
-#  - packing
+  - packing
 #
 #gradle_build:
 #  image: java:8-jdk
