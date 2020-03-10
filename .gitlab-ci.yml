@@ -42,8 +42,10 @@ deploy_minikube_ec2:
     - mkdir -p ~/.ssh
     - echo -e “$SSH_PRIVATE_KEY” > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
-    - ‘[[ -f /.dockerenv ]] && echo -e “Host *\n\tStrictHostKeyChecking no\n\n” > ~/.ssh/config’
+    -  '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
+    - whomai
+    - pwd
     - echo "testeing-connection" > ~/test.txt
 #  only:
 #    - master
