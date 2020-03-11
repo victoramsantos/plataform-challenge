@@ -9,8 +9,8 @@ variables:
 
 stages:
   - build
-  - deploy
   - packing
+  - deploy
   - rollback_ec2
 
 gradle_build:
