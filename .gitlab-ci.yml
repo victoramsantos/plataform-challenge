@@ -58,4 +58,6 @@ rollback_ec2_job:
   stage: deploy
   script:
     - helm rollback $APPLICATION_NAME 0
+  dependencies:
+    - deploy_minikube_ec2
   when: on_failure
