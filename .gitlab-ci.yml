@@ -8,32 +8,32 @@ variables:
   HELM_CHART_PATH: "./parte1/plataform-challenge"
 
 stages:
-#  - build
+  - build
   - deploy
+  - packing
   - rollback_ec2
-#  - packing
-#
-#gradle_build:
-#  image: java:8-jdk
-#  stage: build
-#  script:
-#    - ./$APPLICATION_PATH/gradlew clean build
-#  artifacts:
-#    paths:
-#      - $APPLICATION_ARTIFACT
-#
-#docker_build_push:
-#  image: docker:18.09.7
-#  services:
-#    - docker:18.09.7-dind
-#  stage: packing
-#  script:
-#    - docker build . -f $DOCKERFILE_PATH/Dockerfile -t $DOCKER_REPOSITORY/$APPLICATION_NAME:$CI_COMMIT_SHORT_SHA
-#    - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-#    - docker push $DOCKER_REPOSITORY/$APPLICATION_NAME:$CI_COMMIT_SHORT_SHA
-#    - echo "APPLICATION_IMAGE -> $DOCKER_REPOSITORY/$APPLICATION_NAME:$CI_COMMIT_SHORT_SHA"
-##  only:
-##    - master
+
+gradle_build:
+  image: java:8-jdk
+  stage: build
+  script:
+    - ./$APPLICATION_PATH/gradlew clean build
+  artifacts:
+    paths:
+      - $APPLICATION_ARTIFACT
+
+docker_build_push:
+  image: docker:18.09.7
+  services:
+    - docker:18.09.7-dind
+  stage: packing
+  script:
+    - docker build . -f $DOCKERFILE_PATH/Dockerfile -t $DOCKER_REPOSITORY/$APPLICATION_NAME:$CI_COMMIT_SHORT_SHA
+    - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - docker push $DOCKER_REPOSITORY/$APPLICATION_NAME:$CI_COMMIT_SHORT_SHA
+    - echo "APPLICATION_IMAGE -> $DOCKER_REPOSITORY/$APPLICATION_NAME:$CI_COMMIT_SHORT_SHA"
+#  only:
+#    - master
 
 deploy_minikube_ec2:
   stage: deploy
@@ -45,7 +45,7 @@ deploy_minikube_ec2:
     - chmod 600 ~/.ssh/id_rsa
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - helm upgrade --install --set-string image.tag=prd $APPLICATION_NAME $HELM_CHART_PATH
+    - helm upgrade --install --set-string image.tag=$CI_COMMIT_SHORT_SHA  $APPLICATION_NAME $HELM_CHART_PATH
     - kubectl rollout status deploy/$APPLICATION_NAME
     - minikube service $APPLICATION_NAME --url
 #  only:
