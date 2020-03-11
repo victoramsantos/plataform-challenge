@@ -10,7 +10,7 @@ variables:
 stages:
   - build
   - deploy
-  - rollback_ec2
+#  - rollback_ec2
 #  - packing
 #
 gradle_build:
@@ -53,7 +53,7 @@ deploy_minikube_ec2:
     - master
 
 rollback_ec2_job:
-  stage: rollback_ec2
+  stage: deploy
   script:
     - helm rollback $APPLICATION_NAME 0
   when: on_failure
