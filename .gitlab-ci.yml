@@ -9,6 +9,7 @@ variables:
 
 stages:
   - deploy
+  - cleanup_ec2
 #  - build
 #  - packing
 #
@@ -51,8 +52,8 @@ deploy_minikube_ec2:
 #  only:
 #    - master
 
-cleanup_build_job:
-  stage: cleanup_build
+cleanup_ec2_job:
+  stage: cleanup_ec2
   script:
     - helm delete --purge $APPLICATION_NAME
   when: on_failure
