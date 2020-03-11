@@ -45,7 +45,7 @@ deploy_minikube_ec2:
     - chmod 600 ~/.ssh/id_rsa
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - helm upgrade --install --wait --timeout 1 --set-string image.tag=prd $APPLICATION_NAME $HELM_CHART_PATH
+    - helm upgrade --install --set-string image.tag=prd $APPLICATION_NAME $HELM_CHART_PATH
     - kubectl rollout status deploy/$APPLICATION_NAME
     - minikube service $APPLICATION_NAME --url
 #  only:
