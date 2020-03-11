@@ -45,6 +45,8 @@ deploy_minikube_ec2:
     - chmod 600 ~/.ssh/id_rsa
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - helm install --set-string image.tag=CI_COMMIT_SHORT_SHA --name $APPLICATION_NAME plataform-challenge
+    - pwd
+    - ls -lha
+    - helm install --set-string image.tag=$CI_COMMIT_SHORT_SHA --name $APPLICATION_NAME $HELM_CHART_PATH
 #  only:
 #    - master
