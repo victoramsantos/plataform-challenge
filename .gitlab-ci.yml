@@ -17,7 +17,8 @@ gradle_build:
   image: java:8-jdk
   stage: build
   script:
-    - ./$APPLICATION_PATH/gradlew clean build
+    - cd $APPLICATION_PATH
+    - ./gradlew clean build
   artifacts:
     paths:
       - $APPLICATION_ARTIFACT
