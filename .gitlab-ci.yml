@@ -33,8 +33,8 @@ docker_build_push:
     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - docker push $DOCKER_REPOSITORY/$APPLICATION_NAME:$CI_COMMIT_SHORT_SHA
     - echo "APPLICATION_IMAGE -> $DOCKER_REPOSITORY/$APPLICATION_NAME:$CI_COMMIT_SHORT_SHA"
-#  only:
-#    - master
+  only:
+    - master
 
 deploy_minikube_ec2:
   stage: deploy
