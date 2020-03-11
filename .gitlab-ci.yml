@@ -1,10 +1,11 @@
 variables:
   DOCKERFILE_PATH: "./parte1"
   DOCKER_REPOSITORY: "victoramsantos"
-  IMAGE_NAME: "plataform-challenge"
+  APPLICATION_NAME: "plataform-challenge"
   APPLICATION_PATH: "./app"
   APPLICATION_ARTIFACT: "./app/build/libs/app.jar"
   DOCKER_HOST: tcp://docker:2375
+  HELM_CHART_PATH: "./parte1/plataform-challenge"
 
 stages:
   - deploy
@@ -27,10 +28,10 @@ stages:
 #    - docker:18.09.7-dind
 #  stage: packing
 #  script:
-#    - docker build . -f $DOCKERFILE_PATH/Dockerfile -t $DOCKER_REPOSITORY/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
+#    - docker build . -f $DOCKERFILE_PATH/Dockerfile -t $DOCKER_REPOSITORY/$APPLICATION_NAME:$CI_COMMIT_SHORT_SHA
 #    - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-#    - docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
-#    - echo "APPLICATION_IMAGE -> $DOCKER_REPOSITORY/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA"
+#    - docker push $DOCKER_REPOSITORY/$APPLICATION_NAME:$CI_COMMIT_SHORT_SHA
+#    - echo "APPLICATION_IMAGE -> $DOCKER_REPOSITORY/$APPLICATION_NAME:$CI_COMMIT_SHORT_SHA"
 ##  only:
 ##    - master
 
@@ -44,8 +45,6 @@ deploy_minikube_ec2:
     - chmod 600 ~/.ssh/id_rsa
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - whoami
-    - pwd
-    - echo "testeing-connection" > ~/test.txt
+    - helm install --set-string image.tag=CI_COMMIT_SHORT_SHA --name $APPLICATION_NAME plataform-challenge
 #  only:
 #    - master
