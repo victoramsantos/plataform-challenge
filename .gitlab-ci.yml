@@ -1,7 +1,7 @@
 variables:
   DOCKERFILE_PATH: "./parte1"
   DOCKER_REPOSITORY: "victoramsantos"
-  APPLICATION_NAME: "plataform-challenge"
+  APPLICATION_NAME: plataform-challenge
   APPLICATION_PATH: "./app"
   APPLICATION_ARTIFACT: "./app/build/libs/app.jar"
   DOCKER_HOST: tcp://docker:2375
