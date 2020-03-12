@@ -5,7 +5,7 @@ sudo amazon-linux-extras install docker
 sudo service docker start
 
 export SECRET=${credential}
-mdkir ~/.docker
+mkdir ~/.docker
 echo '{
         "auths": {
                 "https://index.docker.io/v1/": {
