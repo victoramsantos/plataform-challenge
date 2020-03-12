@@ -67,7 +67,7 @@ build_stack:
   script:
     - cd $TERRAFORM_PATH
     - terraform init
-    - terraform apply -var appname=$APPLICATION_NAME -var ec2_port=80 -var credential=$DOCKER_HASH -var default_image=$DOCKER_REPOSITORY/$APPLICATION_NAME:$CI_COMMIT_SHORT_SHA --auto-approve
+    - terraform apply -var appname=$APPLICATION_NAME -var ec2_port=80 -var container_port=8080 -var credential=$DOCKER_HASH -var default_image=$DOCKER_REPOSITORY/$APPLICATION_NAME:$CI_COMMIT_SHORT_SHA --auto-approve
   when: manual
 
 destroy_stack:
