@@ -45,7 +45,7 @@ variable "tg_protocol" {
   default = "HTTP"
 }
 
-variable "hc_path" {
+variable "health_path" {
   default = "/health"
 }
 variable "hc_port" {
