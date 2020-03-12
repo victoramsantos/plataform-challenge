@@ -62,7 +62,6 @@ rollback_ec2_job:
     - helm rollback $APPLICATION_NAME 0
   when: manual
 
-
 build_stack:
   stage: build_stack
   tags:
@@ -71,4 +70,14 @@ build_stack:
     - cd $TERRAFORM_PATH
     - terraform init
     - terraform apply -var appname=$APPLICATION_NAME -var ec2_port=80 -var credential=$DOCKER_HASH -var default_image=$DOCKER_REPOSITORY/$APPLICATION_NAME:$CI_COMMIT_SHORT_SHA --auto-approve
+  when: manual
+
+destroy_stack:
+  stage: build_stack
+  tags:
+    - ec2-runner
+  script:
+    - cd $TERRAFORM_PATH
+    - terraform init
+    - terraform destroy --auto-approve
   when: manual
