@@ -44,7 +44,7 @@ module target_group {
   tg_protocol = var.tg_protocol
   vpc_id = var.vpc_id
   hc_interval = var.hc_interval
-  hc_path = var.hc_path
+  hc_path = var.health_path
   hc_port = var.hc_port
   hc_status_code = var.hc_status_code
   hc_threshold = var.hc_threshold
