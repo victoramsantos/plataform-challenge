@@ -11,8 +11,7 @@ variables:
 stages:
   - build
   - packing
-  - deploy
-  - rollback_ec2
+  - deploy_minikube
   - build_stack
 
 gradle_build:
@@ -39,7 +38,7 @@ docker_build_push:
     - master
 
 deploy_minikube_ec2:
-  stage: deploy
+  stage: deploy_minikube
   tags:
     - ec2-runner
   before_script:
@@ -48,14 +47,13 @@ deploy_minikube_ec2:
     - chmod 600 ~/.ssh/id_rsa
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - helm upgrade --install --set-string image.tag=$CI_COMMIT_SHORT_SHA  $APPLICATION_NAME $HELM_CHART_PATH
+    - helm upgrade --install --set-string image.tag=$CI_COMMIT_SHORT_SHA $APPLICATION_NAME $HELM_CHART_PATH
     - kubectl rollout status deploy/$APPLICATION_NAME
     - minikube service $APPLICATION_NAME --url
-  only:
-    - master
+  when: manual
 
-rollback_ec2_job:
-  stage: rollback_ec2
+rollback_minikube_ec2:
+  stage: deploy_minikube
   tags:
     - ec2-runner
   script:

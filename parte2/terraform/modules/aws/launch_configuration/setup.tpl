@@ -14,7 +14,7 @@ echo '{
         "HttpHeaders": {
                 "User-Agent": "Docker-Client/19.03.6-ce (linux)"
         }
-}' > ./test.txt
+}' > ~/.docker/config.json
 
 export SECRET=${credential}
 sed -i s/SECRET/$SECRET/g ~/.docker/config.json
