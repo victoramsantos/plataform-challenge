@@ -41,7 +41,9 @@ init_minikube_ec2:
   tags:
     - ec2-runner
   script:
-    - sudo su gitlab-runner
+#    - sudo su gitlab-runner
+    - pwd
+    - whoami
     - minikube stop
     - minikube start
     - helm init
