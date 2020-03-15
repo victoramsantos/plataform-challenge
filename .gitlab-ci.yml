@@ -19,6 +19,9 @@ gradle_build:
   script:
     - cd $APPLICATION_PATH
     - ./gradlew clean build
+  artifacts:
+    paths:
+      - $APPLICATION_ARTIFACT
 
 docker_build_push:
   image: docker:18.09.7
