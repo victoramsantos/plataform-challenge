@@ -4,7 +4,6 @@ variables:
   APPLICATION_NAME: plataform-challenge
   APPLICATION_PATH: "./app"
   APPLICATION_ARTIFACT: "./app/build/libs/app.jar"
-  DOCKER_HOST: tcp://docker:2375
   HELM_CHART_PATH: "./parte1/plataform-challenge"
   TERRAFORM_PATH: "./parte2/terraform/providers/aws/stacks/deploy_env"
 
@@ -20,9 +19,6 @@ gradle_build:
   script:
     - cd $APPLICATION_PATH
     - ./gradlew clean build
-  artifacts:
-    paths:
-      - $APPLICATION_ARTIFACT
 
 docker_build_push:
   image: docker:18.09.7
@@ -36,6 +32,17 @@ docker_build_push:
     - echo "APPLICATION_IMAGE -> $DOCKER_REPOSITORY/$APPLICATION_NAME:$CI_COMMIT_SHORT_SHA"
   only:
     - master
+
+init_minikube_ec2:
+  stage: deploy_minikube
+  tags:
+    - ec2-runner
+  script:
+    - minikube stop
+    - minikube start
+    - helm init
+    - minikube addons enable metrics-server
+  when: manual
 
 deploy_minikube_ec2:
   stage: deploy_minikube

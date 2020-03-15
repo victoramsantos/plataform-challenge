@@ -14,3 +14,4 @@ spec:
   selector:
     app.kubernetes.io/name: {{ include "plataform-challenge.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
+    run: {{ include "plataform-challenge.name" . }}
