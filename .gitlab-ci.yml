@@ -4,7 +4,6 @@ variables:
   APPLICATION_NAME: plataform-challenge
   APPLICATION_PATH: "./app"
   APPLICATION_ARTIFACT: "./app/build/libs/app.jar"
-  DOCKER_HOST: tcp://docker:2375
   HELM_CHART_PATH: "./parte1/plataform-challenge"
   TERRAFORM_PATH: "./parte2/terraform/providers/aws/stacks/deploy_env"
 
