@@ -37,6 +37,17 @@ docker_build_push:
   only:
     - master
 
+init_minikube_ec2:
+  stage: deploy_minikube
+  tags:
+    - ec2-runner
+  script:
+    - sudo su gitlab-runner
+    - minikube stop
+    - minikube start
+    - helm init
+  when: manual
+
 deploy_minikube_ec2:
   stage: deploy_minikube
   tags:

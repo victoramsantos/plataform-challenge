@@ -15,3 +15,9 @@ service:
 
 application:
   healthPath: /
+
+autoscaling:
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUAverageUtilizationPercentage: 50
+  # targetMemoryAverageUtilizationPercentage: 60
