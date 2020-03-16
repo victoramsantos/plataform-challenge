@@ -27,8 +27,8 @@ Este arquivo contém quatro stages (3 [parte1](../parte1) e 1 [parte2](../parte2
 
 ## Stage: Build
 ### gradle_build
-Executa o build da aplicação. Este job não possuí contexto de branche, logo todo push realizado no repositório ele é
-invocado (serve para validaros Pull Requests também).
+Executa o build da aplicação. Este job não possuí contexto de branch, logo todo push realizado no repositório ele é
+invocado (serve para validação de Pull Requests também).
 Por fim, este job gera um artefato (o .jar utilizado na construção da imagem docker) e o mantém no cache.
 Vale ressaltar que este job é realizado utilizando a imagem docker java:8-jdk.
 
@@ -41,7 +41,7 @@ Após o login, podemos realizar o push da imagem. Utilizamos para tag da imagem 
 é feito utilizando a variável de ambiente padrão do GitLab CI_COMMIT_SHORT_SHA.
 Vale ressaltar que este job possuí escopo de chamada para branch master. Isso é feito para não acontecer o deploy para qualquer
 commit realizado no repositório.
-Por fim, este job é utiliza a imagem docker:18.09.7 para rodar e o serviço docker:18.09.7-dind (Docker inside Docker), 
+Por fim, este job utiliza a imagem docker:18.09.7 para rodar e o serviço docker:18.09.7-dind (Docker inside Docker), 
 para conseguir executar comandos docker dentro de um container.
 
 ## Stage: deploy_minikube
@@ -64,11 +64,24 @@ Por fim, ele utiliza o minikube para expor o serviço, porém é necessário ace
 ### rollback_minikube_ec2
 Este job realiza o rollback do deploy realizado. Ele altera o serviço atual para o último serviço. 
 
+# Executando a aplicação
+Após o build da aplicação e da imagem, a pipeline do GitLab fica aguardando a execução dos jobs manuais. Para testar
+a aplicação no minikube execute o job init_minikube_ec2 e deploy_minikube_ec2. Após isso, acesse a máquina e utilize
+o IP retornado no deploy_minikube_ec2 para verificar a resposta da aplicação.
+Uma observação importante, é que o arquivo [Main.kt](../app/src/main/kotlin/com/example/hello/Main.kt) foi adaptado. Ele
+agora conta com uma funcionalidade para estressar a aplicação a fim de testar o autoscaling do serviço rodando no Kubernetes.
+Para isso, acesse o path raiz da aplicação passando alguma pasta (ex.: localhost/stress), isso irá realiar algumas operações
+matemáticas apenas para aumentar o processamento da instância que o container está rodando.
+Caso queira verificar o comportamento do Horizontal Pod Autoscaler, rode o comando na máquina do runner:
+```shell script
+kubectl get hpa plataform-challenge
+```
+
 # Débitos técnicos
 Débito | Motivo
 ------------ | -------------
 Rollback automático | Não consegui encontrar uma maneira de se fazer isso direto pela pipeline (.gitlab-ci.yml). Acabei por criar um job de rollback manual (extremamente desaconselhado para ambientes de produção).
-Pipeline compartilhada | Não encontrei uma maneira eficiente de se criar pipelines compartilhadas, aos modes do jenkins shared-libraries. 
-DNS para aplicação (parte1) | Não foi implementado a resolução de DNS para o ip retornado pelo minikube
+Pipeline compartilhada | Não encontrei uma maneira eficiente de se criar pipelines compartilhadas aos modes do jenkins shared-libraries. 
+DNS para aplicação (parte1) | Não foi implementado o uso de um DNS para acessar a aplicação
 Versionamento da aplicação no Chart (appVersion) | Não achei uma maneira de usar o values.yaml para alterar a propriedade appVersion no Chart.yaml
 Expor serviço para acesso externo | Não foi implementado uma maneira de expor o serviço para acesso externo ao minikube.

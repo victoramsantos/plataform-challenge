@@ -24,7 +24,7 @@ Este arquivo contém quatro stages (3 [parte1](../parte1) e 1 [parte2](../parte2
 
 ## Stage: build_stack
 ### build_stack
-Este job realiza o provisionamento de recursos na AWS. Ele irá executar a receita do [deploy_env](terraform/providers/aws/stacks/deploy_env).
+Este job realiza o provisionamento de recursos na AWS. Ele irá executar a receita do [deploy_env/main.tf](terraform/providers/aws/stacks/deploy_env/main.tf).
 Ele também é parametrizado para executar a imagem com tag do short hash commit atual.
 
 ### destroy_stack
@@ -34,6 +34,6 @@ Este job utiliza o tfstates do deploy_env para destruir a stack criada.
 # Débitos técnicos
 Débito | Motivo
 ------------ | -------------
-Habilitar conexão SSL no Loadbalancer | Criar certificado e habilitar apenas conexão SSL no ALB (ou redirect 80 -> 443).
+Habilitar conexão SSL no Load Balancer | Criar certificado e habilitar apenas conexão SSL no ALB (ou redirect 80 -> 443).
 Políticas de scaling | Utilizar algum serviço para garantir que a aplicação esteja escalando quando houver aumento de requisição
 Orquestrador de container | Uma vez que o deploy está sendo realizado utilizando imagens docker, o ideal seria utilizar algum orquestraor de container para gerenciar o ambiente (AWS ECS, Kubernetes)
